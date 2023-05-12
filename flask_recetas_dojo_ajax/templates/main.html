@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block titulo %}Dashboard Principal{% endblock %}
+{% block contenido %}
+
+
+{% include '_menu.html' %}
+
+<div class="container mt-5">
+    <h1>Bienvenidos al Dashboard del Sistema : {{sistema}} </h1>
+
+    <hr>
+
+    <div class="row g-3 mt-4" style="min-height:400px;">
+
+      <div class="col-md-12 col-lg-6 col-md mb-2 border">
+        <div class="p-3 mb-2 recetas" style="min-height: 200px;">
+          <h2 style="color:rebeccapurple;" id="h2total">Todas las Recetas Creadas : {{recetas|length}}</h2>
+          <hr>
+            <table class="table table-resposive table-striped" id="tabla_receta">
+              <thead class="bg-secondary text-light">
+                <tr>
+                  <th>Nombre</th>
+                  <th>Menos de 30 Min</th>
+                  <th>Autor</th>
+                  <th>Opciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% for receta in recetas %}
+                    <tr>
+                      <td>{{receta.nombre}}</td>
+                      {%if receta.under30 == 1%}
+                        <td>Si</td>
+                      {%else%}
+                        <td>No</td>
+                      {%endif%}
+                      <td>{{receta.nombre_autor}}</td>
+                      {%if receta.autor == session['idusuario']%}
+                        <td><a href="/recetas/detalle_receta/{{receta.id}}">ver receta</a> | <a href="/recetas/editar_receta/{{receta.id}}">editar</a> | <p class="myhyperlink" onclick="eliminar_receta({{receta.id}},this)">eliminar</p></td>
+                      {%else%}
+                        <td><a href="/recetas/detalle_receta/{{receta.id}}">ver receta</a></td>
+                      {%endif%}
+                    </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+        </div>
+      </div>
+
+      <div class="col-md-12 col-lg-6 col-md mb-2 border p-3">
+
+        <!-- <form action=""> -->
+
+            <div class="mb-3">
+              <label for="nombre_receta" class="form-label">Nombre</label>
+              <input value="" type="text" class="form-control" required name="nombre_receta" id="nombre_receta">
+            </div>
+
+            <div class="mb-3">
+              <label for="descripcion_receta" class="form-label">Descripcion</label>
+              <textarea  rows="4" cols="50"  class="form-control" required name="descripcion_receta" id="descripcion_receta" style="resize:none;" ></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="instrucciones_receta" class="form-label">Instrucciones</label>
+              <textarea  rows="4" cols="50"  class="form-control" required name="instrucciones_receta" id="instrucciones_receta" style="resize:none;"></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="date_made_receta" class="form-label">Fecha de Creacion</label>
+              <input value="" type="date" class="form-control" required name="date_made_receta" id="date_made_receta">
+            </div>
+
+            <div class="mb-3">
+              <p>Menos de 30 Minutos?</p>
+                  <label for="under30_yes" class="form-check-label">Si</label>
+                  <input value="1" type="radio" checked class="form-check-input" required name="under30" id="under30_yes">
+                  <label for="under30_no" class="form-check-label">No</label>
+                  <input value="0" type="radio" class="form-check-input" required name="under30" id="under30_no">
+            </div>
+
+            <div>
+              <input type="hidden" id="operacion_receta" name="operacion_receta" value="Nueva Receta">
+              <button onclick="crear_receta({{session['idusuario']}})" class="btn btn-primary">Grabar</button>
+            </div>
+
+        <!-- </form> -->
+
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

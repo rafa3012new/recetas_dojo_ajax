@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+{% endblock %}
+
+{% block contenido %}
+
+{% include '_menu.html' %}
+
+<div class="container mt-1">
+  <div><a  href="/" style="font-size: 1.3em;">Regresar</a></div>
+
+  <h1 class="text-center">{{operacion}}</h1>
+
+  <hr>
+
+  <div><h3 id="h3publicador" class="col-md-12 col-lg-12 text-center text-success">Publicada por : {{receta.nombre_autor}}</h3></div>
+
+  <div class="row mt-5">
+
+    {%if operacion == "Editar Receta"%}
+        <div class="col-md-12 col-lg-6 col-md border pb-4">
+    {%else%}
+        <div class="col-md-12 col-lg-12 col-md border pb-4">
+    {%endif%}
+      <h3 id="h3nombre_receta" class="text-center text-success"><div>{{receta.nombre}}</div></h3>
+      <hr>
+        <ul id="lista_detalle_receta" class="lista_detalle_receta">
+            <li><div>Descripcion:</div><div>{{receta.descripcion}}</div></li>
+            {%if receta.under30 == 1%}
+              <li><div>Menos de 30 Minutos?:</div><div>Si</div></li>
+            {%else%}
+              <li><div>Menos de 30 Minutos?:</div><div>No</div></li>
+            {%endif%}
+            <li><div>Instrucciones:</div><div>{{receta.instrucciones}}</div></li>
+            <li><div>Fecha de Creacion:</div><div>{{receta.date_made}}</div></li>
+        </ul>
+    </div>
+
+  {%if operacion == "Editar Receta"%}
+
+  <div class="col-md-12 col-lg-6 col-md border pb-4 mb-2">
+
+    <!-- <form action=""> -->
+
+        <div class="mb-3">
+          <label for="nombre_receta" class="form-label">Nombre</label>
+          <input value="{{receta.nombre}}" type="text" class="form-control" required name="nombre_receta" id="nombre_receta">
+        </div>
+
+        <div class="mb-3">
+          <label for="descripcion_receta" class="form-label">Descripcion</label>
+          <textarea  rows="4" cols="50"  class="form-control" required name="descripcion_receta" id="descripcion_receta" style="resize:none;" >{{receta.descripcion}}</textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="instrucciones_receta" class="form-label">Instrucciones</label>
+          <textarea  rows="4" cols="50"  class="form-control" required name="instrucciones_receta" id="instrucciones_receta" style="resize:none;">{{receta.instrucciones}}</textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="date_made_receta_edit" class="form-label">Fecha de Creacion</label>
+          <input value="{{receta.date_made}}" type="date" class="form-control" required name="date_made_receta_edit" id="date_made_receta_edit">
+        </div>
+
+        <div class="mb-3">
+          <p>Menos de 30 Minutos?</p>
+              {%if receta.under30 == 1%}
+                  <label for="under30_yes" class="form-check-label">Si</label>
+                  <input value="1" type="radio" checked class="form-check-input" required name="under30" id="under30_yes">
+                  <label for="under30_no" class="form-check-label">No</label>
+                  <input value="0" type="radio" class="form-check-input" required name="under30" id="under30_no">
+              {%else%}
+                  <label for="under30_yes" class="form-check-label">Si</label>
+                  <input value="1" type="radio" class="form-check-input" required name="under30" id="under30_yes">
+                  <label for="under30_no_" class="form-check-label">No</label>
+                  <input value="0" type="radio" checked class="form-check-input" required name="under30" id="under30_no">
+              {%endif%}
+        </div>
+
+        <div>
+          <input type="hidden" id="id_receta_edit" name="id_receta_edit" value="{{receta.id}}">
+          <input type="hidden" id="operacion_receta" name="operacion_receta" value="{{operacion}}">
+          <button onclick="editar_receta({{session['idusuario']}})" class="btn btn-primary">Actuallizar</button>
+          <a href="/" class="btn btn-danger">Cancelar</a>
+        </div>
+
+    <!-- </form> -->
+
+  </div>
+
+  {%endif%}
+
+
+</div>
+
+</div>
+
+{% endblock %}
